@@ -1,0 +1,52 @@
+Source code website pengumuman kelulusan online berbasis PHP Native dan MySQL untuk SMA, SMK, MA, maupun SMP, dengan tampilan resmi ala malam wisuda: navy, emas, dan bingkai sertifikat. Sebelum waktunya tiba, siswa melihat hitung mundur yang disamakan dengan jam server. Begitu dibuka, siswa cukup memasukkan NISN dan tanggal lahir untuk melihat hasil LULUS, TIDAK LULUS, atau DITUNDA lengkap dengan daftar nilai dan pesan dari sekolah.
+
+Siswa yang lulus bisa langsung mencetak Surat Keterangan Lulus (SKL) A4 lengkap dengan kop sekolah, nomor surat otomatis, tanda tangan kepala sekolah, dan QR code untuk memeriksa keaslian. Panitia mengelola data siswa dan nilai, mengimpor dari CSV/Excel, mencetak SKL satu kelas sekaligus, dan memantau berapa siswa yang sudah membuka pengumuman per kelas dan per jam.
+Cara kerja
+Data tersimpan di MySQL: siswa, mata pelajaran, nilai, pengaturan, pengguna, log akses, dan penghitung percobaan gagal. Waktu buka dan tutup pengumuman diperiksa di server pada setiap permintaan, sehingga hasil tidak bisa dibuka lebih awal walaupun formulir diakali. Hitung mundur di browser memakai selisih jam server, lalu saat waktunya tiba halaman dimuat ulang dengan jeda acak beberapa detik agar ratusan siswa tidak menekan server di detik yang sama.
+
+Cek hasil mencocokkan NISN dan tanggal lahir. Pesan salah selalu sama sehingga orang lain tidak bisa menebak NISN yang terdaftar, dan setelah 5 kali salah dalam 15 menit IP tersebut diblokir sementara. Penghitungnya disimpan di database, bukan di cookie. Hasil dan SKL hanya bisa dibuka lewat sesi siswa yang sudah lolos cek. QR di SKL berisi kode acak 16 karakter yang mengarah ke halaman verifikasi dengan NISN disamarkan, dan kode bisa diganti bila SKL perlu dibatalkan.
+
+Ada dua peran: admin (pengaturan, pengguna, semua data) dan operator untuk wali kelas atau Tata Usaha (siswa, nilai, mapel, log). Keamanan memakai PDO prepared statement, CSRF, password_hash, honeypot, header keamanan, validasi unggahan logo sebagai gambar asli, .htaccess yang menutup folder internal, dan ekspor CSV yang aman dari formula injection.
+Fitur
+Halaman pengumuman bergaya resmi: navy, emas, bingkai sertifikat, responsif di HP
+Hitung mundur hari-jam-menit-detik yang disamakan dengan jam server
+Halaman terbuka otomatis saat waktunya tiba, dengan jeda acak agar server tidak dibanjiri
+Cek hasil dengan NISN + tanggal lahir, status LULUS / TIDAK LULUS / DITUNDA
+Efek konfeti datar untuk siswa lulus dan pesan khusus per status
+Daftar nilai per mapel dan rata-rata (bisa disembunyikan)
+SKL A4 siap cetak: kop sekolah, nomor surat otomatis, TTD kepala sekolah, QR verifikasi
+Halaman verifikasi keaslian SKL dari QR dengan NISN disamarkan
+Waktu buka dan tutup pengumuman dikunci di server
+Blokir otomatis setelah 5 kali salah (berbasis IP di database) + honeypot anti bot
+Pratinjau tampilan siswa oleh panitia sebelum pengumuman dibuka
+Data siswa & nilai: cari, filter kelas/status/sudah membuka, ubah status massal
+Impor CSV/Excel dengan templat, perbaikan NISN yang kehilangan angka 0, laporan baris bermasalah
+Cetak SKL satu kelas sekaligus
+Dasbor: jumlah lulus, persentase siswa yang sudah membuka per kelas, grafik akses per jam
+Log akses lengkap + daftar IP dengan banyak percobaan gagal
+Pengaturan identitas sekolah, logo, format nomor SKL, pesan, dan tahun ajaran
+Tombol persiapan hari H: kosongkan log uji coba dan susun ulang nomor SKL
+Dua peran: admin dan operator (wali kelas / TU)
+Data contoh 216 siswa kelas XII dengan nilai 13 mapel
+Ekspor CSV aman formula injection, jalan di XAMPP tanpa framework
+Panduan instalasi
+Kebutuhan: PHP 8.0 atau lebih baru dan MySQL/MariaDB. Paling mudah pakai XAMPP atau Laragon.
+
+Ekstrak file ZIP lalu pindahkan folder pengumuman-kelulusan ke folder web server:
+
+XAMPP: C:\xampp\htdocs\pengumuman-kelulusan
+Laragon: C:\laragon\www\pengumuman-kelulusan
+Jalankan Apache dan MySQL.
+
+Buka http://localhost/phpmyadmin, klik Import, pilih file database/kelulusan.sql, lalu klik Import. Database kelulusan beserta 216 siswa contoh dibuat otomatis. Waktu pengumuman contoh diatur ke kemarin pukul 16.00 sehingga cek hasil bisa langsung dicoba.
+
+Atau lewat terminal:
+
+mysql -u root -p < database/kelulusan.sql
+Jika user/password MySQL kamu bukan bawaan XAMPP, sesuaikan config/database.php.
+
+Buka http://localhost/pengumuman-kelulusan untuk halaman siswa. Panitia masuk lewat tombol Panitia:
+
+Admin: admin / admin123
+Operator: operator / operator123
+Di menu Pengaturan, isi identitas sekolah, logo, kepala sekolah, format nomor SKL, dan waktu pengumuman dibuka. Impor data siswa dan nilai lewat Siswa & nilai → Impor memakai templat CSV, lalu ganti semua kata sandi di menu Profil.

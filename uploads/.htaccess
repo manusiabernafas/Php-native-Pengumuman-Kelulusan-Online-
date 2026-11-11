@@ -1,0 +1,5 @@
+# Hanya logo sekolah (gambar); skrip apa pun di folder ini tidak boleh dijalankan
+<FilesMatch "\.(?i:php|phtml|phar|php\d)$">
+    Require all denied
+</FilesMatch>
+Options -Indexes

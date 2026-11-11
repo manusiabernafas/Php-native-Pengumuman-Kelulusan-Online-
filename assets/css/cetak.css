@@ -1,0 +1,35 @@
+/* Lembar SKL siap cetak A4 */
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #e8e3d6; font: 11pt/1.45 'Nunito Sans', Arial, sans-serif; color: #111; }
+.alat { position: sticky; top: 0; display: flex; gap: 14px; align-items: center; justify-content: center; padding: 10px; background: #13213c; color: #fff; font-size: 14px; z-index: 2; }
+.alat button { background: #e2b53f; color: #13213c; border: 0; border-radius: 6px; padding: 9px 18px; font: 700 14px sans-serif; cursor: pointer; }
+.lembar { width: 210mm; min-height: 297mm; margin: 10mm auto; padding: 12mm 18mm 10mm; height: 297mm; overflow: hidden; background: #fff; page-break-after: always; break-after: page; }
+.lembar:last-of-type { page-break-after: auto; break-after: auto; }
+.kop { display: flex; align-items: center; gap: 14px; border-bottom: 3px double #111; padding-bottom: 8px; margin-bottom: 14px; text-align: center; }
+.kop > div:not(.logo) { flex: 1; }
+.kop .logo { flex: none; }
+.kop .logo { width: 22mm; height: 22mm; object-fit: contain; display: grid; place-items: center; color: #13213c; }
+.kop p { margin: 0; font-size: 10pt; }
+.kop .instansi { font-weight: 700; letter-spacing: .04em; }
+.kop h1 { margin: 2px 0; font: 700 17pt/1.2 'Bodoni Moda', Georgia, serif; letter-spacing: .03em; }
+.judul { text-align: center; margin: 6px 0 0; font: 700 14pt 'Bodoni Moda', Georgia, serif; text-decoration: underline; letter-spacing: .04em; }
+.nomor { text-align: center; margin: 2px 0 10px; }
+.data { margin: 6px 0 10px 8mm; border-collapse: collapse; }
+.data td { padding: 1px 6px 1px 0; vertical-align: top; }
+.data td:first-child { width: 52mm; }
+.lulus { text-align: center; font: 700 18pt 'Bodoni Moda', Georgia, serif; margin: 6px 0; letter-spacing: .1em; }
+.nilai { width: 100%; border-collapse: collapse; margin: 4px 0 8px; font-size: 9.5pt; line-height: 1.3; }
+.nilai th, .nilai td { border: 1px solid #333; padding: 2px 7px; }
+.nilai th { background: #f1ede2; }
+.nilai td:first-child { width: 10mm; text-align: center; } .nilai td:last-child { width: 24mm; text-align: center; }
+.nilai .rata td { font-weight: 700; }
+p { margin: 4px 0; }
+.ttd { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 6mm; gap: 10mm; }
+.qr-kotak { display: flex; gap: 8px; align-items: flex-end; font-size: 8.5pt; color: #444; }
+.qr { width: 26mm; height: 26mm; } .qr svg { width: 100%; height: 100%; display: block; }
+.tangan { width: 70mm; }
+.nama-kepsek { margin-top: 18mm; font-weight: 700; text-decoration: underline; }
+@media print { body { background: #fff; } .alat { display: none; } .lembar { margin: 0; } }
+@media screen { .lembar { height: auto; min-height: 297mm; } }
+@media screen and (max-width: 820px) { .lembar { zoom: .45; } }
